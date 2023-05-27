@@ -19,10 +19,14 @@ These features are planned, but not yet implemented:
   - TCP- and UDP-Socket abstractions
   - URI / URL library
   - Simple HTTP requests
+  - Basic WebSocket support
 - Miscellanous structs:
   - Date and Time library
 - Memory allocator library
 - Threading library
 - Parsing library
 - Documentation system for comments
+- Hashing functions
+- Sorting algorithms
+- Basic encryption algorithms
 - Game math (Vectors, Matrices, Quaternions, Rays, Rectangles, Splines / Curves, Interpolation ... etc)

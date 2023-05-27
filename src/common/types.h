@@ -2,6 +2,7 @@
 #define __C_LIB_TYPES_H__
 
 #include <stdint.h>
+#include <stdbool.h>
 
 typedef uint8_t u8;
 typedef uint16_t u16;
@@ -15,5 +16,7 @@ typedef int64_t i64;
 
 typedef float f32;
 typedef double f64;
+
+typedef size_t usize;
 
 #endif // __C_LIB_TYPES_H__
