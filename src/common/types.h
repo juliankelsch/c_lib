@@ -1,3 +1,6 @@
+#ifndef __C_LIB_TYPES_H__
+#define __C_LIB_TYPES_H__
+
 #include <stdint.h>
 
 typedef uint8_t u8;
@@ -12,3 +15,5 @@ typedef int64_t i64;
 
 typedef float f32;
 typedef double f64;
+
+#endif // __C_LIB_TYPES_H__
