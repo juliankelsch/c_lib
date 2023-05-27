@@ -1,4 +1,4 @@
-#include "../types.h"
+#include "../common/types.h"
 
 typedef struct Vector3 Vector3;
 
