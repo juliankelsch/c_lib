@@ -3,7 +3,8 @@
 
 #include <stddef.h>
 
-#define ALIGN_OF(type) offsetof(struct {char x, type test}, test)
+#define ALIGN_OF(type) offsetof( \
+    struct {char x; type test; }, test)
 
 #define ARRAY_COUNT(array) (sizeof(array) / sizeof(*array))
 

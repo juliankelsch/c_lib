@@ -6,19 +6,10 @@
 
 typedef struct Allocator Allocator;
 
-typedef struct Allocation Allocation;
-
-struct Allocation
-{
-    u8 *bytes;
-    usize size;
-    usize alignment;
-};
-
 // Requests [size] number of bytes from the allocator aligned to [alignment].
-typedef Allocation AllocationFunc(void *allocator, usize size, usize alignment);
-typedef bool ReallocationFunc(void *allocator, Allocation *allocation, usize new_size);
-typedef void DeallocationFunc(void *allocator, Allocation *allocation);
+typedef void *AllocationFunc(void *allocator, usize size, usize alignment);
+typedef void *ReallocationFunc(void *allocator, void *data, usize new_size, usize alignment);
+typedef void DeallocationFunc(void *allocator, void *data);
 
 struct Allocator
 {
@@ -30,11 +21,13 @@ struct Allocator
 
 Allocator get_std_c_allocator();
 
-Allocation allocator_allocate(const Allocator *allocator, usize size, usize alignment);
-bool allocator_reallocate(const Allocator *allocator, Allocation *allocation, usize new_size);
-void allocator_deallocate(const Allocator *allocator, Allocation *allocation);
+void *allocator_allocate(const Allocator *allocator, usize size, usize alignment);
+void *allocator_allocate_zeroed(const Allocator *allocator, usize size, usize alignment);
+void *allocator_reallocate(const Allocator *allocator, void *data, usize new_size, usize alignment);
+void allocator_deallocate(const Allocator *allocator, void *data);
 
-#define ALLOCATE(allocator, type) (type *)allocator_allocate(allocator, sizeof(type), ALIGN_OF(type)).bytes
-#define ALLOCATE_N(allocator, count, type) (type *)allocator_allocate(allocator, count * sizeof(type), ALIGN_OF(type)).bytes
+#define ALLOCATE(allocator, type) (type *)allocator_allocate(allocator, sizeof(type), ALIGN_OF(type))
+#define ALLOCATE_N(allocator, count, type) (type *)allocator_allocate(allocator, count * sizeof(type), ALIGN_OF(type))
+#define REALLOCATE_N(allocator, data, count, type) (type *)allocator_reallocate(allocator, data, count * sizeof(type), ALIGN_OF(type))
 
 #endif // __C_LIB_ALLOCATOR_H__

@@ -1,57 +1,46 @@
 #include "allocator.h"
 
 #include <stdlib.h>
+#include <string.h>
 
-Allocation allocator_allocate(const Allocator *allocator, usize size, usize alignment)
+void *allocator_allocate(const Allocator *allocator, usize size, usize alignment)
 {
-    // TODO: null checks/ error handling
     return allocator->allocate(allocator->allocator, size, alignment);
 }
 
-bool allocator_reallocate(const Allocator *allocator, Allocation *allocation, usize new_size)
+void *allocator_allocate_zeroed(const Allocator *allocator, usize size, usize alignment)
 {
-    // TODO: null checks/ error handling
-    return allocator->reallocate(allocator->allocator, allocation, new_size);
-}
-
-void allocator_deallocate(const Allocator *allocator, Allocation *allocation)
-{
-    // TODO: null checks/ error handling
-    allocator->deallocate(allocator->allocator, allocation);
-}
-
-static Allocation _c_std_allocate(void *allocator, usize size, usize alignment)
-{
-    void *memory = malloc(size);
-    Allocation allocation = {0};
-    if (memory != NULL)
+    void *data = allocator_allocate(allocator, size, alignment);
+    if (data != NULL)
     {
-        allocation.bytes = memory;
-        allocation.size = size;
-        allocation.alignment = alignment;
+        memset(data, 0, size);
     }
-    return allocation;
+    return data;
 }
 
-bool _c_std_reallocate(void *allocator, Allocation *allocation, usize new_size)
+void *allocator_reallocate(const Allocator *allocator, void *data, usize new_size, usize alignment)
 {
-    void *memory = realloc(allocation->bytes, new_size);
-    if (memory == NULL)
-    {
-        return false;
-    }
-
-    allocation->bytes = memory;
-    allocation->size = new_size;
-    return true;
+    return allocator->reallocate(allocator->allocator, data, new_size, alignment);
 }
 
-void _c_std_deallocate(void *allocator, Allocation *allocation)
+void allocator_deallocate(const Allocator *allocator, void *data)
 {
-    free(allocation->bytes);
-    allocation->bytes = NULL;
-    allocation->size = 0;
-    allocation->alignment = 0;
+    allocator->deallocate(allocator->allocator, data);
+}
+
+static void *_c_std_allocate(void *allocator, usize size, usize alignment)
+{
+    return malloc(size);
+}
+
+static void *_c_std_reallocate(void *allocator, void *data, usize new_size)
+{
+    return realloc(data, new_size);
+}
+
+static void _c_std_deallocate(void *allocator, void *data)
+{
+    free(data);
 }
 
 Allocator get_std_c_allocator()

@@ -1,6 +1,14 @@
 {
   "files.associations": {
     "*.pl": "prolog",
-    "allocator.h": "c"
+    "allocator.h": "c",
+    "compare": "c",
+    "tuple": "c",
+    "type_traits": "c",
+    "utility": "c",
+    "xmemory": "c",
+    "xstring": "c",
+    "xtr1common": "c",
+    "xutility": "c"
   }
 }
